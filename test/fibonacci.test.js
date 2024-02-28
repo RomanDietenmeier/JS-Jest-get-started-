@@ -7,4 +7,7 @@ describe("fibonacci function", () => {
   test("fibonacci(6)=8", () => {
     expect(fibonacci(6)).toBe(8);
   });
+  test("fibonacci()=1", () => {
+    expect(fibonacci()).toBe(1);
+  });
 });

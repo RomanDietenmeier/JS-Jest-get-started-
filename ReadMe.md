@@ -197,3 +197,87 @@ Ran all test suites.
 ```
 
 Now it is your time to unit test in your JavaScript projects as well as to introduce the test driven development approach 🚀🥊🚀
+
+# Code Coverage
+
+To make sure that your tests cover the entirety of the code base, you can also check the code coverage with Jest!
+
+To test for coverage, add the following `jest --coverage` script to your package.json:
+
+```
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage --coverageDirectory=coverage"
+  }
+```
+
+Then run `npm run coverage` in the terminal:
+
+```
+ PASS  test/fibonacci.test.js
+  fibonacci function
+    √ fibonacci(1)=1 (5 ms)
+    √ fibonacci(6)=8
+
+--------------|---------|----------|---------|---------|-------------------
+File          | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+--------------|---------|----------|---------|---------|-------------------
+All files     |     100 |    66.66 |     100 |     100 |
+ fibonacci.js |     100 |    66.66 |     100 |     100 | 1
+--------------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        0.782 s, estimated 1 s
+Ran all test suites.
+```
+
+While executing the tests, Jest will now also check if we hit every statement, every branch or if condition, as well as every function and every line.
+
+We get this nice report which says that our tests cover everything except one branch!
+
+To see which branch we did not cover in our tests, we can open up the coverage report in the now newly created `coverage` directory.<br>
+In there you can find another directory called `lcov-report`:<br>
+In this directory you will find an index.html file which you can open with your internet browser:<br>
+![coverage-report-index-html.png](coverage-report-index-html.png)<br>
+We see that the fibonacci.js filename provides a link to get further information about the missing branch coverage. Thus, we follow the link to the fibonacci.js report:<br>
+![coverage-report-fibonacci-js.png](coverage-report-fibonacci-js.png)<br>
+Highlighted in yellow, we see the part of our code that was not executed.
+It shows that the fibonacci function was never called without any parameters.
+Thus, the default parameter was not covered during our tests.
+
+To achieve 100% test coverage, which is generally always the goal, we introduce another test to our test suite in the `fibonacci.test.js` file:
+
+```js
+test("fibonacci()=1", () => {
+  expect(fibonacci()).toBe(1);
+});
+```
+
+As we now call the fibonacci function without any parameter, the default parameter will be used, and thus we achieve test coverage over our whole project.
+
+To test this, we run `npm run coverage` again:
+
+```
+ PASS  test/fibonacci.test.js
+  fibonacci function
+    √ fibonacci(1)=1 (2 ms)
+    √ fibonacci(6)=8 (1 ms)
+    √ fibonacci()=1
+
+--------------|---------|----------|---------|---------|-------------------
+File          | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+--------------|---------|----------|---------|---------|-------------------
+All files     |     100 |      100 |     100 |     100 |
+ fibonacci.js |     100 |      100 |     100 |     100 |
+--------------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        0.461 s, estimated 1 s
+Ran all test suites.
+```
+
+Now our test cover the entire project, we should keep this high standard up while we continue to develop our project.
+
+Code Coverage lets us know if we have dead code and untested paths through our code, and is thus a great metric to uphold good code quality!
